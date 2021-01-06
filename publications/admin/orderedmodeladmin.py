@@ -28,14 +28,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from functools import update_wrapper
 
 # from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 # from django.utils.html import strip_spaces_between_tags as short
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.contrib import admin
-from django.contrib.admin.util import unquote
+from django.contrib.admin.utils import unquote
 from django.contrib.admin.views.main import ChangeList
 
 
@@ -49,7 +49,7 @@ class OrderedModelAdmin(admin.ModelAdmin):
         try:
             from django.conf.urls import patterns, url
         except ImportError:
-            from django.conf.urls.defaults import patterns, url
+            from django.conf.urls import patterns, url
 
         def wrap(view):
             def wrapper(*args, **kwargs):

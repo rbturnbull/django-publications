@@ -7,13 +7,13 @@ from publications.models import CustomLink, CustomFile
 
 class CustomLinkInline(admin.StackedInline):
 	model = CustomLink
-	extra = 1
+	extra = 0
 	max_num = 5
 
 
 class CustomFileInline(admin.StackedInline):
 	model = CustomFile
-	extra = 1
+	extra = 0
 	max_num = 5
 
 
