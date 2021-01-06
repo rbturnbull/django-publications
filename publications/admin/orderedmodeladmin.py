@@ -27,25 +27,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 from functools import update_wrapper
 
-<<<<<<< HEAD
-# from django.conf import settings
-=======
->>>>>>> 8e4e2ab0f448cb658e27e33f2aaecaf7130448f9
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.contrib import admin
-<<<<<<< HEAD
-from django.contrib.admin.utils import unquote
-=======
 try:
     from django.contrib.admin.utils import unquote
 except ImportError:
     # Django <= 1.6
     from django.contrib.admin.util import unquote
->>>>>>> 8e4e2ab0f448cb658e27e33f2aaecaf7130448f9
 from django.contrib.admin.views.main import ChangeList
 from django.db.models.options import Options
 
@@ -65,11 +57,7 @@ class OrderedModelAdmin(admin.ModelAdmin):
         try:
             from django.conf.urls import url
         except ImportError:
-<<<<<<< HEAD
-            from django.conf.urls import patterns, url
-=======
             from django.conf.urls.defaults import url
->>>>>>> 8e4e2ab0f448cb658e27e33f2aaecaf7130448f9
 
         def wrap(view):
             def wrapper(*args, **kwargs):
