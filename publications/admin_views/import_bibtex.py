@@ -2,8 +2,9 @@ __license__ = 'MIT License <http://www.opensource.org/licenses/mit-license.php>'
 __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+import re
+import publications.six as six
+from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -67,6 +68,7 @@ def import_bibtex(request):
 						'doi',
 						'isbn',
 						'keywords',
+						'pages',
 						'note',
 						'abstract',
 						'month']
@@ -77,8 +79,17 @@ def import_bibtex(request):
 
 					# map integer fields to integers
 					entry['month'] = MONTHS.get(entry['month'].lower(), 0)
+
 					entry['volume'] = entry.get('volume', None)
 					entry['number'] = entry.get('number', None)
+
+					if isinstance(entry['volume'], six.text_type):
+						entry['volume'] = int(re.sub('[^0-9]', '', entry['volume']))
+					if isinstance(entry['number'], six.text_type):
+						entry['number'] = int(re.sub('[^0-9]', '', entry['number']))
+
+					# remove whitespace characters (likely due to line breaks)
+					entry['url'] = re.sub(r'\s', '', entry['url'])
 
 					# determine type
 					type_id = None
@@ -106,6 +117,7 @@ def import_bibtex(request):
 						institution=entry['institution'],
 						volume=entry['volume'],
 						number=entry['number'],
+						pages=entry['pages'],
 						note=entry['note'],
 						url=entry['url'],
 						doi=entry['doi'],
@@ -122,13 +134,13 @@ def import_bibtex(request):
 
 		if errors:
 			# some error occurred
-			return render_to_response(
+			return render(
+				request,
 				'admin/publications/import_bibtex.html', {
 					'errors': errors,
 					'title': 'Import BibTex',
 					'types': Type.objects.all(),
-					'request': request},
-				RequestContext(request))
+					'request': request})
 		else:
 			try:
 				# save publications
@@ -146,13 +158,16 @@ def import_bibtex(request):
 			messages.info(request, msg)
 
 			# redirect to publication listing
-			return HttpResponseRedirect('../')
+			if len(publications) == 1:
+				return HttpResponseRedirect('../%s/change/' % publications[0].id)
+			else:
+				return HttpResponseRedirect('../')
 	else:
-		return render_to_response(
+		return render(
+			request,
 			'admin/publications/import_bibtex.html', {
 				'title': 'Import BibTex',
 				'types': Type.objects.all(),
-				'request': request},
-			RequestContext(request))
+				'request': request})
 
 import_bibtex = staff_member_required(import_bibtex)
