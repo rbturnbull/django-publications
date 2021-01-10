@@ -1,3 +1,7 @@
+__license__ = 'MIT License <http://www.opensource.org/licenses/mit-license.php>'
+__author__ = 'Robert Turnbull <rob@robturnbull.com>'
+__docformat__ = 'epytext'
+
 from django.db import models
 
 from django.contrib.contenttypes.fields import GenericForeignKey

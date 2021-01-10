@@ -5,10 +5,13 @@ __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
 import os
+import re
 
 from django.db import models
 from django.utils.http import urlquote_plus
 from django.conf import settings
+from django.urls import reverse
+
 from publications.fields import PagesField
 from publications.models import Type, List
 from string import ascii_uppercase
@@ -67,12 +70,14 @@ class Publication(models.Model):
 	year = models.PositiveIntegerField()
 	month = models.IntegerField(choices=MONTH_CHOICES, blank=True, null=True)
 	journal = models.CharField(max_length=256, blank=True)
-	book_title = models.CharField(max_length=256, blank=True)
+	journal_abbreviation = models.CharField(max_length=256, blank=True)
+	book_title = models.CharField(max_length=256, blank=True, help_text="If this work is book section, the title of the larger work.")
 	publisher = models.CharField(max_length=256, blank=True)
-	institution = models.CharField(max_length=256, blank=True)
+	location = models.CharField(max_length=256, blank=True, help_text="The location where this work was published.")
+	institution = models.CharField(max_length=256, blank=True, help_text="If this work is a thesis, the institution where it was completed.")
 	volume = models.IntegerField(blank=True, null=True)
 	number = models.IntegerField(blank=True, null=True, verbose_name='Issue number')
-	pages = PagesField(max_length=32, blank=True)
+	pages = PagesField(max_length=32, blank=True, help_text="The full range of pages of this work if it is not a complete book.")
 	note = models.CharField(max_length=256, blank=True)
 	keywords = models.CharField(max_length=256, blank=True,
 		help_text='List of keywords separated by commas.')
@@ -104,6 +109,8 @@ class Publication(models.Model):
 
 		self._produce_author_lists()
 
+	def get_absolute_url(self):
+		return reverse("publications:publication_detail", kwargs={"citekey": self.citekey})
 
 	def _produce_author_lists(self):
 		"""
@@ -155,21 +162,21 @@ class Publication(models.Model):
 				else:
 					break
 
-			# abbreviate names
-			for j, name in enumerate(names[:-1 - num_suffixes]):
-				# don't try to abbreviate these
-				if j == 0 and name in prefixes:
-					continue
-				if j > 0 and name in prepositions:
-					continue
+			# # abbreviate names
+			# for j, name in enumerate(names[:-1 - num_suffixes]):
+			# 	# don't try to abbreviate these
+			# 	if j == 0 and name in prefixes:
+			# 		continue
+			# 	if j > 0 and name in prepositions:
+			# 		continue
 
-				if (len(name) > 2) or (len(name) and (name[-1] != '.')):
-					k = name.find('-')
-					if 0 < k + 1 < len(name):
-						# take care of dash
-						names[j] = name[0] + '.-' + name[k + 1] + '.'
-					else:
-						names[j] = name[0] + '.'
+			# 	if (len(name) > 2) or (len(name) and (name[-1] != '.')):
+			# 		k = name.find('-')
+			# 		if 0 < k + 1 < len(name):
+			# 			# take care of dash
+			# 			names[j] = name[0] + '.-' + name[k + 1] + '.'
+			# 		else:
+			# 			names[j] = name[0] + '.'
 
 			if len(names):
 				self.authors_list[i] = ' '.join(names)
@@ -279,13 +286,11 @@ class Publication(models.Model):
 		else:
 			return self.book_title
 
-
 	def first_page(self):
-		return self.pages.split('-')[0]
-
+		return PagesField.split(self.pages)[0]
 
 	def last_page(self):
-		return self.pages.split('-')[-1]
+		return PagesField.split(self.pages)[-1]
 
 
 	def z3988(self):

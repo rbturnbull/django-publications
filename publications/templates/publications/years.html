@@ -1,26 +1,37 @@
 {% extends "base.html" %}
 
-{% block head %}
-	{{ block.super }}
-	<link rel="alternate" type="application/rss+xml" title="RSS" href="?rss" />
-	<link rel="unapi-server" type="application/xml" title="unAPI" href="{% url 'publications:unapi' %}"/>
-{% endblock %}
 
 {% block content %}
-	<div class="special_links">
-		<a href="?plain">Plain text</a>,
-		<a href="?ris">RIS</a>,
-		<a href="?bibtex">BibTex</a>
-	</div>
-	{% for year, publications in years %}
-	<a href="{% url 'publications:year' year %}"><h1>{{ year }}</h1></a>
-		<hr/>
-		<div{% if not forloop.last %} style="margin-bottom: 30px;"{% endif %}>
-		{% for publication in publications %}
-			<div{% if not forloop.last %} style="margin-bottom: 20px;"{% endif %}>
-				{% include "publications/publication.html" %}
+<div class=container>
+	<div class="float-right">
+		<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add" href="{% url 'publications:publication_add' %}">
+			<i class="fas fa-plus"></i>
+		</a>
+		<div class="dropdown d-inline-block">
+			<button  style="font-size: 0.5rem; line-height: 10px;" class="btn btn-primary dropdown-toggle"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<i class="fas fa-download fa-sm" ></i>
+			</button>
+			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+				<h6 class="dropdown-header">Export</h6>
+				<a class="dropdown-item link" href="?plain">Plain text</a>
+				<a class="dropdown-item link" href="?ris">RIS</a>
+				<a class="dropdown-item link" href="?bibtex">BibTex</a>		
 			</div>
-		{% endfor %}
 		</div>
-	{% endfor %}
+		
+	</div>
+
+	<div>
+		{% for year, publications in years %}
+			<h2><a href="{% url 'publications:year' year %}">{{ year }}</a></h2>
+			<ul>
+				{% for publication in publications %}
+					<li>
+						{% include "publications/publication.html" %}
+					</li>
+				{% endfor %}
+			</ul>
+		{% endfor %}
+	</div>
+</div>
 {% endblock %}

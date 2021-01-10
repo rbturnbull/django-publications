@@ -46,7 +46,7 @@ Installation
 3) Add the following to your project's `urls.py`:
 
 	```python
-	url(r'^publications/', include('publications.urls')),
+	path("publications/", include("publications.urls")),
 	```
 
 4) Run the following:

@@ -2,9 +2,12 @@ __license__ = 'MIT License <http://www.opensource.org/licenses/mit-license.php>'
 __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
+import re
+
 from django import forms
 from django.forms import widgets
 from django.db import models
+
 
 class PagesWidget(widgets.MultiWidget):
 	def __init__(self, *args, **kwargs):
@@ -20,7 +23,7 @@ class PagesWidget(widgets.MultiWidget):
 
 	def decompress(self, value):
 		if value:
-			values = value.split('-')
+			values = PagesField.split(value)
 
 			if len(values) > 1:
 				return values
@@ -43,7 +46,7 @@ class PagesForm(forms.MultiValueField):
 			if data_list[0] and data_list[1]:
 				if data_list[0] == data_list[1]:
 					return str(data_list[0])
-				return str(data_list[0]) + '-' + str(data_list[1])
+				return str(data_list[0]) + '–' + str(data_list[1]) # this uses an en-dash
 			if data_list[0]:
 				return str(data_list[0])
 			if data_list[1]:
@@ -59,6 +62,10 @@ class PagesField(models.Field):
 
 	def get_internal_type(self):
 		return 'CharField'
+
+	@classmethod
+	def split(cls, value):
+		return re.split( r'-|–', value)
 
 try:
 	from south.modelsinspector import add_introspection_rules
