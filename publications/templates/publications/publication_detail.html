@@ -1,5 +1,8 @@
 {% extends "base.html" %}
+{% load publication_extras %}
 
 {% block content %}
+    <h1>{{publication.title}}</h1>
+    <p>Authors: {{ publication|authors }}</p>
     <p>{% include 'publications/publication.html' %}</p>
 {% endblock content %}

@@ -5,13 +5,12 @@
 	<a href="{% url 'publications:author' author_escaped %}" class="author">{{ author }}</a>,
 	{% endfor %} <i>et al.</i>
 {% else %}
-	{% for author, author_escaped in publication.authors_escaped %}<a href="{% url 'publications:author' author_escaped %}" class="author">{{ author }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %}{% if not forloop.first %},{% endif %} and {% else %}, {% endif %}{% endif %}{% endfor %},
+	{{  publication|authors }}
 {% endif %}<br/>
 <a href="{{ publication.get_absolute_url }}">{{ publication.title|tex_parse }}</a><br/>
 {% if publication.journal %}
 	<i>{{ publication.journal }}</i>{% if publication.note %} ({{ publication.note }}){% endif %},
-	{% if publication.volume %}{{ publication.volume }}{% if publication.number %}/{{ publication.number }}{% endif %}{% endif %} ({{ publication.year }})
-	{% if publication.pages %}: {{ publication.pages }}{% endif %}.	
+	{% if publication.volume %}{{ publication.volume }}{% if publication.number %}/{{ publication.number }}{% endif %}{% endif %} ({{ publication.year }}){% if publication.pages %}: {{ publication.pages }}{% endif %}.	
 {% else %}
 	{% if publication.book_title %}<i>{{ publication.book_title }}</i>{% if publication.note %} ({{ publication.note }}){% endif %},{% endif %}
 	{% if publication.location %}{{ publication.location }}: {% endif %}{% if publication.publisher %}{{ publication.publisher }},{% endif %}
@@ -37,17 +36,11 @@
 {% endfor %}
 {% for link in publication.links %}
 	<a class="link" rel="external" href="{{ link.url }}">{{ link.description }}</a>
-{% endfor %}<span>
-<div class="dropdown d-inline-block">
-	<button  style="font-size: 0.5rem; line-height: 10px;" class="btn btn-small btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		<i class="fas fa-download fa-sm" ></i>
-	</button>
-	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		<h6 class="dropdown-header">Export</h6>
-		<a class="dropdown-item link" href="{% url 'publications:publication_ris' publication.citekey %}">RIS</a>
-		<a class="dropdown-item link" href="{% url 'publications:publication_bibtex' publication.citekey %}">BibTex</a>		
-	</div>
-</div>
+{% endfor %}
+Export: <a class=" link" href="{% url 'publications:publication_ris' publication.citekey %}">RIS</a>
+<a class="link" href="{% url 'publications:publication_bibtex' publication.citekey %}">BibTex</a>		
+
+  
   
 <abbr class="unapi-id" title="{{ publication.id }}"></abbr>
 <span class="Z3988" title="{{ publication.z3988 }}"></span>

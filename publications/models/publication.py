@@ -162,32 +162,33 @@ class Publication(models.Model):
 				else:
 					break
 
-			# # abbreviate names
-			# for j, name in enumerate(names[:-1 - num_suffixes]):
-			# 	# don't try to abbreviate these
-			# 	if j == 0 and name in prefixes:
-			# 		continue
-			# 	if j > 0 and name in prepositions:
-			# 		continue
+			# abbreviate names
+			names_abbreviated = names.copy()
+			for j, name in enumerate(names_abbreviated[:-1 - num_suffixes]):
+				# don't try to abbreviate these
+				if j == 0 and name in prefixes:
+					continue
+				if j > 0 and name in prepositions:
+					continue
 
-			# 	if (len(name) > 2) or (len(name) and (name[-1] != '.')):
-			# 		k = name.find('-')
-			# 		if 0 < k + 1 < len(name):
-			# 			# take care of dash
-			# 			names[j] = name[0] + '.-' + name[k + 1] + '.'
-			# 		else:
-			# 			names[j] = name[0] + '.'
+				if (len(name) > 2) or (len(name) and (name[-1] != '.')):
+					k = name.find('-')
+					if 0 < k + 1 < len(name):
+						# take care of dash
+						names_abbreviated[j] = name[0] + '.-' + name[k + 1] + '.'
+					else:
+						names_abbreviated[j] = name[0] + '.'
 
 			if len(names):
 				self.authors_list[i] = ' '.join(names)
 
 				# create simplified/normalized representation of author name
 				if len(names) > 1:
-					for name in names[0].split('-'):
-						name_simple = self.simplify_name(' '.join([name, names[-1]]))
+					for name in names_abbreviated[0].split('-'):
+						name_simple = self.simplify_name(' '.join([name, names_abbreviated[-1]]))
 						self.authors_list_simple.append(name_simple)
 				else:
-					self.authors_list_simple.append(self.simplify_name(names[0]))
+					self.authors_list_simple.append(self.simplify_name(names_abbreviated[0]))
 
 				# number of prepositions
 				num_prepositions = 0
@@ -236,7 +237,7 @@ class Publication(models.Model):
 
 
 	def authors_escaped(self):
-		return [(author, author.lower().replace(' ', '+'))
+		return [(author, author.lower().replace(' ', '_'))
 			for author in self.authors_list]
 
 

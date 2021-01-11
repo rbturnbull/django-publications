@@ -13,7 +13,7 @@ from publications.utils import populate
 
 
 def author(request, name):
-    fullname = capwords(name.replace('+', ' '))
+    fullname = capwords(name.replace('+', ' ').replace('_', ' '))
     fullname = fullname.replace(' Von ', ' von ').replace(' Van ', ' van ')
     fullname = fullname.replace(' Der ', ' der ')
 
@@ -26,7 +26,7 @@ def author(request, name):
         off = fullname.find('-', off)
 
     # split into forename, middlenames and surname
-    names = name.replace(' ', '+').split('+')
+    names = name.replace(' ', '+').replace('_', '+').split('+')
 
     # construct a liberal query
     surname = names[-1]
@@ -39,11 +39,13 @@ def author(request, name):
     surname = surname.replace(u'ß', u'%%')
     surname = surname.replace(u'ss', u'%%')
 
-    query_str = u'SELECT * FROM {table} ' \
-                'WHERE lower({table}.authors) LIKE lower(\'%%{surname}%%\') ' \
-                'ORDER BY {table}.year DESC, {table}.month DESC, {table}.id DESC'
-    query = Publication.objects.raw(
-        query_str.format(table=Publication._meta.db_table, surname=surname))
+    table = Publication._meta.db_table
+    query_str = f'SELECT * FROM {table} ' \
+                f'WHERE lower({table}.authors) LIKE lower(%s) ' \
+                f'ORDER BY {table}.year DESC, {table}.month DESC, {table}.id DESC'
+    import logging
+    logging.error(query_str)
+    query = Publication.objects.raw(query_str, ["%"+surname+"%"])
 
     # find publications of this author
     publications = []
