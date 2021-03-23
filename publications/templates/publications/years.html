@@ -4,9 +4,11 @@
 {% block content %}
 <div class=container>
 	<div class="float-right">
-		<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add" href="{% url 'publications:publication_add' %}">
-			<i class="fas fa-plus"></i>
-		</a>
+        {% if perms.publications.add_publication %}
+			<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add" href="{% url 'publications:publication_add' %}">
+				<i class="fas fa-plus"></i>
+			</a>
+		{% endif %}
 		<div class="dropdown d-inline-block">
 			<button  class="btn btn-primary dropdown-toggle"  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<i class="fas fa-download fa-sm" ></i>

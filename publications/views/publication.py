@@ -2,7 +2,7 @@ __license__ = 'MIT License <http://www.opensource.org/licenses/mit-license.php>'
 __author__ = 'Robert Turnbull <rob@robturnbull.com>'
 __docformat__ = 'epytext'
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import (
     CreateView,
@@ -15,15 +15,16 @@ from publications.models import Publication
 from publications.forms import PublicationForm
 
 
-class PublicationAddView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+class PublicationAddView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Publication
     form_class = PublicationForm
     success_message = "Publication added successfully!"
     template_name = 'publications/form.html'
     extra_context = dict(form_title="Add Publication")
+    permission_required = "publications.add_publication"
 
 
-class PublicationUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class PublicationUpdateView(PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Publication
     form_class = PublicationForm
     success_message = "Publication updated successfully!"
@@ -31,13 +32,15 @@ class PublicationUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView)
     extra_context = dict(form_title="Update Publication")
     slug_field = 'citekey'
     slug_url_kwarg = 'citekey'
+    permission_required = "publications.update_publication"
 
 
-class PublicationDetailView(LoginRequiredMixin, DetailView):
+class PublicationDetailView(PermissionRequiredMixin, DetailView):
     model = Publication
     template_name = 'publications/publication_detail.html'
     slug_field = 'citekey'
     slug_url_kwarg = 'citekey'
+    permission_required = "publications.view_publication"
 
 
 class PublicationExportView(PublicationDetailView):
