@@ -3,9 +3,13 @@ __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
 from django.shortcuts import render
+from django.contrib.auth.decorators import permission_required
+
 from publications.models import Publication, CustomLink, CustomFile
 from publications.utils import populate
 
+
+@permission_required('publications.view_publication')
 def year(request, year=None):
 	years = []
 	publications = Publication.objects.select_related()
