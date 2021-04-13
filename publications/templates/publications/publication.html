@@ -30,10 +30,12 @@
 {% if publication.url %}<a data-toggle="tooltip" data-placement="bottom" title="External Link" class="link" rel="external" href="{{ publication.url }}"><i class="fas fa-external-link-alt"></i></a>{% endif %}
 {% if publication.doi %}<a class="link" rel="external" href="http://dx.doi.org/{{ publication.doi }}">DOI</a>{% endif %}
 {% if not publication.journal and publication.isbn %}<a class="link" rel="external" href="http://isbndb.com/search/all?query={{ publication.isbn }}">ISBN</a>,{% endif %}
-{% if publication.pdf %}<a class="link" href="{{ MEDIA_URL }}{{ publication.pdf }}">PDF</a>,{% endif %}
-{% for file in publication.files %}
-	<a class="link" href="{{ MEDIA_URL }}{{ file.file }}">{{ file.description }}</a>
-{% endfor %}
+{% if publication.media_public or perms.publications.view_media %}
+	{% if publication.pdf %}<a class="link" href="{{ publication.pdf.url }}" data-toggle="tooltip" data-placement="bottom" title="PDF" ><i class="fas fa-file-pdf"></i></a>,{% endif %}
+	{% for file in publication.files %}
+		<a class="link" href="{{ file.file.url }}">{{ file.description }}</a>
+	{% endfor %}
+{% endif %}
 {% for link in publication.links %}
 	<a class="link" rel="external" href="{{ link.url }}">{{ link.description }}</a>
 {% endfor %}

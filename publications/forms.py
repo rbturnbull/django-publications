@@ -29,6 +29,8 @@ class PublicationForm(forms.ModelForm):
             'pages',
             'institution',
             'url',
+            'pdf',
+            'media_public',
             'doi',
             'isbn',
             'note',

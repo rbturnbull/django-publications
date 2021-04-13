@@ -86,6 +86,7 @@ class Publication(models.Model):
 	code = models.URLField(blank=True,
 		help_text='Link to page with code.')
 	pdf = models.FileField(upload_to='publications/', verbose_name='PDF', blank=True, null=True)
+	media_public = models.BooleanField(default=False, help_text='Whether or not any media files for this publication should be accessible publicly.')
 	image = models.ImageField(upload_to='publications/images/', blank=True, null=True)
 	thumbnail = models.ImageField(upload_to='publications/thumbnails/', blank=True, null=True)
 	doi = models.CharField(max_length=128, verbose_name='DOI', blank=True)
