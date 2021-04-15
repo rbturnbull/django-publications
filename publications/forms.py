@@ -42,7 +42,12 @@ class PublicationForm(forms.ModelForm):
             Submit('submit', 'Save')
         )
 
-	# pdf = models.FileField(upload_to='publications/', verbose_name='PDF', blank=True, null=True)
-	# image = models.ImageField(upload_to='publications/images/', blank=True, null=True)
-	# thumbnail = models.ImageField(upload_to='publications/thumbnails/', blank=True, null=True)
-	# lists = models.ManyToManyField(List, blank=True)
+    def clean(self):
+        if 'doi' in self.cleaned_data:
+            # Remove common prefixes that people could use when adding in the form
+            prefixes_to_remove = ["doi.org/", "https://doi.org/", "http://doi.org/", "doi:"]            
+            for prefix in prefixes_to_remove:
+                if self.cleaned_data['doi'].startswith(prefix):
+                    self.cleaned_data['doi'] = self.cleaned_data['doi'][len(prefix):]
+
+        return super().clean()

@@ -16,8 +16,16 @@ from publications.fields import PagesField
 from publications.models import Type, List
 from string import ascii_uppercase
 
+from django.core.validators import RegexValidator
+
 if 'django.contrib.sites' in settings.INSTALLED_APPS:
 	from django.contrib.sites.models import Site
+
+doi_validator = RegexValidator(
+	regex=r'^10.\d{4,9}\/[\-._;()\/:A-Z0-9a-z]+$',
+	message='Invalid DOI.',
+	code='invalid_doi',
+)
 
 class Publication(models.Model):
 	"""
@@ -89,7 +97,12 @@ class Publication(models.Model):
 	media_public = models.BooleanField(default=False, help_text='Whether or not any media files for this publication should be accessible publicly.')
 	image = models.ImageField(upload_to='publications/images/', blank=True, null=True)
 	thumbnail = models.ImageField(upload_to='publications/thumbnails/', blank=True, null=True)
-	doi = models.CharField(max_length=128, verbose_name='DOI', blank=True)
+	doi = models.CharField(
+		max_length=128, 
+		verbose_name='DOI', 
+		blank=True, 
+		validators=[doi_validator,],
+	)
 	external = models.BooleanField(default=False,
 		help_text='If publication was written in another lab, mark as external.')
 	abstract = models.TextField(blank=True)
