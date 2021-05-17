@@ -12,7 +12,12 @@ setup(
 	url='https://github.com/rbturnbull/django-publications',
 	packages=find_packages(),
 	include_package_data=True,
-	install_requires=('Django>=2.1.0', 'Pillow>=2.3.0', 'django_extensions'),
+	install_requires=(
+		'Django>=2.1.0', 
+		'Pillow>=2.3.0', 
+		'django_extensions',
+		'django-cms>=3.8.0',
+	),
 	zip_safe=False,
 	license='MIT',
 	classifiers=(
