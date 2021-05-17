@@ -126,6 +126,9 @@ class Publication(models.Model):
 	def get_absolute_url(self):
 		return reverse("publications:publication_detail", kwargs={"citekey": self.citekey})
 
+	def get_absolute_update_url(self):
+		return reverse("publications:publication_update", kwargs={"citekey": self.citekey})
+
 	def _produce_author_lists(self):
 		"""
 		Parse authors string to create lists of authors.
