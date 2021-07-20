@@ -2,7 +2,7 @@ __license__ = 'MIT License <http://www.opensource.org/licenses/mit-license.php>'
 __author__ = 'Robert Turnbull <rob@robturnbull.com>'
 __docformat__ = 'epytext'
 
-
+from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 from .reference import Reference
@@ -13,3 +13,10 @@ class ReferenceModel(models.Model):
 
     class Meta:
         abstract = True
+
+    def add_ref(self, publication, locator=""):
+        reference = self.references.filter(publication=publication, locator=locator).first()
+        if not reference:
+            reference = self.references.create(publication=publication, locator=locator)
+        
+        return reference

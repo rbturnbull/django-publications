@@ -11,6 +11,7 @@ from django.db import models
 from django.utils.http import urlquote_plus
 from django.conf import settings
 from django.urls import reverse
+from django.utils.text import slugify
 
 from publications.fields import PagesField
 from publications.models import Type, List
@@ -259,6 +260,12 @@ class Publication(models.Model):
 
 
 	def key(self):
+		if not self.authors:
+			title_slug = slugify(self.title)
+			key = f"{title_slug}-{self.year}"
+			assert Publication.objects.filter(citekey=key).exclude(id=self.id).count() == 0
+			return key
+
 		# this publication's first author
 		author_lastname = self.authors_list[0].split(' ')[-1]
 

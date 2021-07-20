@@ -117,6 +117,9 @@ def join_with_and(words):
 
 @register.filter(name='authors')
 def authors(publication):
+    if not publication.authors:
+        return ""
+
     authors_escaped = publication.authors_escaped()
     links = [
         '<a href="%s" class="author">%s</a>' % (reverse('publications:author', args=[author_escaped]), author )

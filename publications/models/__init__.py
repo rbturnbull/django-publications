@@ -8,3 +8,5 @@ from .publication import Publication
 from .customlink import CustomLink
 from .customfile import CustomFile
 from .orderedmodel import OrderedModel
+from .reference import Reference
+from .referencemodel import ReferenceModel
