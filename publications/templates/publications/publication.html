@@ -1,14 +1,6 @@
 {% load publication_extras %}
 
-{% if publication.authors %}
-	{% if publication.authors_escaped|length > 8 %}
-		{% for author, author_escaped in publication.authors_escaped|slice:":8" %}
-		<a href="{% url 'publications:author' author_escaped %}" class="author">{{ author }}</a>,
-		{% endfor %} <i>et al.</i>
-	{% else %}
-		{{  publication|authors }}
-	{% endif %}<br/>
-{% endif %}
+{% publication_authors publication %}
 <a href="{{ publication.get_absolute_url }}">{{ publication.title|tex_parse }}</a><br/>
 {% if publication.journal %}
 	<i>{{ publication.journal }}</i>{% if publication.note %} ({{ publication.note }}){% endif %},

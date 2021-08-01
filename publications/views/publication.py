@@ -15,7 +15,7 @@ from publications.models import Publication
 from publications.forms import PublicationForm
 
 
-class PublicationAddView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
+class PublicationCreateView(PermissionRequiredMixin, SuccessMessageMixin, CreateView):
     model = Publication
     form_class = PublicationForm
     success_message = "Publication added successfully!"

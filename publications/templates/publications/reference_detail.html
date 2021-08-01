@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load publication_extras %}
+
+{% block content %}
+<div class="publications-container">
+
+    <h1>Reference</h1>
+    
+    <p><a href='{{ reference.content_object.get_absolute_url }}'>{{reference.content_object}}</a></p>
+    <p>
+        {% publication_authors reference.publication %}
+        <a href='{{ reference.publication.get_absolute_url }}'>{{ reference.publication }}</a>{% if reference.locator %}, {{ reference.locator }}{% endif %}.
+    </p>
+</div>
+    
+{% endblock content %}

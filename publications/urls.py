@@ -13,8 +13,11 @@ from publications import views
 
 app_name = 'publications'
 urlpatterns = [
-    path('add/', views.PublicationAddView.as_view(), name='publication_add'),
+    path('references/add/', views.ReferenceCreateView.as_view(), name='reference_add'),
+    path('references/<int:pk>/', views.ReferenceDetailView.as_view(), name='reference_detail'),
+    path('references/<int:pk>/update/', views.ReferenceUpdateView.as_view(), name='reference_update'),
 
+    path('add/', views.PublicationCreateView.as_view(), name='publication_add'),
     path('authors/<str:name>/', views.author, name='author'),
 
     path('<str:citekey>/update/', views.PublicationUpdateView.as_view(), name='publication_update'),

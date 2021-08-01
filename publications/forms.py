@@ -5,7 +5,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Field, Fields
 from crispy_forms.bootstrap import AppendedText
 from django.forms.models import formset_factory
 
-from publications.models import Publication
+from publications.models import Publication, Reference
 
 class PublicationForm(forms.ModelForm):
     class Meta:
@@ -50,4 +50,25 @@ class PublicationForm(forms.ModelForm):
                 if self.cleaned_data['doi'].startswith(prefix):
                     self.cleaned_data['doi'] = self.cleaned_data['doi'][len(prefix):]
 
+        return super().clean()
+
+
+class ReferenceForm(forms.ModelForm):
+    class Meta:
+        model = Reference
+        fields = ['publication', 'locator', 'content_type', 'object_id']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(Field('publication', css_class="alt"),),
+            Row('locator',),
+            Field('content_type', type="hidden"),
+            Field('object_id', type="hidden"),
+            Submit('submit', 'Save'),
+        )
+        self.helper.form_tag
+
+    def clean(self):
         return super().clean()

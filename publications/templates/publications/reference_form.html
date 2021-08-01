@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static i18n compress%}
+
+{% block content %}
+    <div class="publications-container">
+        {{ form.media.css }}
+        <h1>Add Reference</h1>
+        <p>Subject: {{ subject }}</p>
+
+        <form method="post">
+            <input type="hidden" value="{{ subject.id}}" name="object_id">
+            <input type="hidden" value="{{ subject.content_type_id}}" name="content_type">
+            {% crispy form %}
+        </form>
+        {% if request.user.is_staff and admin_url %}
+            <a class="btn btn-danger" style="margin-left: 10px;" href="{{admin_url}}">Admin</a>
+        {% endif %}
+
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+{{ form.media.js }}
+{% endblock %}

@@ -8,4 +8,11 @@ from .id import id
 from .keyword import keyword
 from .list import list
 from .unapi import unapi
-from .publication import *
+from .publication import (
+    PublicationCreateView, 
+    PublicationUpdateView,
+    PublicationBibtexView,
+    PublicationRISView,
+    PublicationDetailView,
+)
+from .reference import ReferenceCreateView, ReferenceDetailView, ReferenceUpdateView

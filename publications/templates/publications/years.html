@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<div class=container>
+<div class=publications-container>
 	<div class="float-right">
         {% if perms.publications.add_publication %}
 			<a class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add" href="{% url 'publications:publication_add' %}">

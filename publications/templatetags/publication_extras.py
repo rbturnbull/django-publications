@@ -106,7 +106,7 @@ def tex_parse(string):
 
 
 @register.inclusion_tag('publications/publication_authors.html')
-def authors(publication):
+def publication_authors(publication):
     return dict(publication=publication)
 
 def join_with_and(words):

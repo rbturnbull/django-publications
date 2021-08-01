@@ -6,9 +6,11 @@
 {% endblock %}
 
 {% block content %}
-    {{ form.media.css }}
-    <h1>{{ form_title }}</h1>
-    {% crispy form %}
+    <div class="publications-container">
+        {{ form.media.css }}
+        <h1>{{ form_title }}</h1>
+        {% crispy form %}
+    </div>
 {% endblock content %}
 
 
