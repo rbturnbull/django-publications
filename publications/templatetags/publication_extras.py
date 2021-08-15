@@ -105,6 +105,11 @@ def tex_parse(string):
     return mark_safe(sub(r'\$([^\$]*)\$', tex_replace, escape(string)))
 
 
+@register.inclusion_tag('publications/references_list.html')
+def references_list(subject):
+    return dict(subject=subject)
+
+
 @register.inclusion_tag('publications/publication_authors.html')
 def publication_authors(publication):
     return dict(publication=publication)

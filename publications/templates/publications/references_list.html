@@ -1,0 +1,8 @@
+<ol>
+  {% for reference in subject.references.all %}
+    <li>
+      {{ reference.publication.authors }}, <a href='{{ reference.publication.get_absolute_url }}'>{{ reference.publication }}</a>{% if reference.locator %}, {{ reference.locator }}{% endif %}.
+    </li>
+  {% endfor %}
+</ol>
+<p><a href='{{ subject.add_ref_url }}'>Add reference.</a></p>

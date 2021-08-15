@@ -16,10 +16,16 @@ class PublicationsMenu(CMSAttachMenu):
         """
         nodes = [
             NavigationNode(
-                title="Add",
+                title="Publications By Year",
+                url=reverse("publications:publication_list"),
+                id=-1,  # unique id for this node within the menu
+                visible=True,
+            ),
+            NavigationNode(
+                title="Add Publication",
                 url=reverse("publications:publication_add"),
                 id=0,  # unique id for this node within the menu
-                visible=False,
+                visible=True,
             ),
         ]
         for obj in Publication.objects.all():
