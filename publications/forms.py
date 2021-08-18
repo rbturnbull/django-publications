@@ -1,5 +1,5 @@
 from django import forms
-
+from django.urls import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, HTML, Field, Fieldset
 from crispy_forms.bootstrap import AppendedText
@@ -21,18 +21,15 @@ class PublicationForm(forms.ModelForm):
             Field('type', css_class="alt"),
             'title',
             'authors',
-            Row('publisher', 'location'),
-            Row('year', Field('month', css_class="alt", style="padding: 20px;",)),
-            Row('journal','journal_abbreviation'),
-            Row('volume', 'number'),
-            Row('book_title'),
+            Row(Column('publisher'), Column('location'), css_class='form-row'),
+            Row(Column('year'), Column(Field('month', css_class="alt", style="padding: 20px;",))),
+            Row(Column('journal'),Column('journal_abbreviation'), Column('volume'),Column('number'),),
             'pages',
+            "book_title",
             'institution',
+            Row(Column('pdf'),Column('media_public'),),
             'url',
-            'pdf',
-            'media_public',
-            'doi',
-            'isbn',
+            Row(Column('doi'),Column('isbn'),),
             'note',
             'citekey',
             'abstract',
@@ -60,10 +57,15 @@ class ReferenceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        add_publication_url = reverse("publications:publication_add")
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(Field('publication', css_class="alt"),),
-            Row('locator',),
+            Row(
+                Column(Field('publication', css_class="alt")),
+                Column(HTML(f"<label>&nbsp;</label><br><a href='{add_publication_url}' class='btn btn-primary'>Add Publication</a>")),
+                css_class='form-row',
+            ),
+            Row('locator',css_class='form-row'),
             Field('content_type', type="hidden"),
             Field('object_id', type="hidden"),
             Submit('submit', 'Save'),
