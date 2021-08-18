@@ -62,7 +62,7 @@ class ReferenceForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(
                 Column(Field('publication', css_class="alt")),
-                Column(HTML(f"<label>&nbsp;</label><br><a href='{add_publication_url}' class='btn btn-primary'>Add Publication</a>")),
+                Column(HTML(f"<label>&nbsp;</label><br><a href='{add_publication_url}' target=”_blank” class='btn btn-primary'>Add Publication</a><small class='help-text form-text text-muted'>After adding, refresh page.</small>")),
                 css_class='form-row',
             ),
             Row('locator',css_class='form-row'),
