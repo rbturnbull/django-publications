@@ -1,0 +1,3 @@
+{% if perms.publications.add_reference %}
+  <a class='btn btn-primary' href='{{ subject.add_ref_url }}' target='_blank'>Add reference</a>
+{% endif %}

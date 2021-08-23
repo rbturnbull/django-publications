@@ -1,3 +1,4 @@
+{% load publication_extras %}
 <ol>
   {% for reference in subject.references.all %}
     <li>
@@ -5,4 +6,4 @@
     </li>
   {% endfor %}
 </ol>
-<p><a href='{{ subject.add_ref_url }}'>Add reference.</a></p>
+{% reference_add_button subject %}

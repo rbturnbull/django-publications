@@ -105,9 +105,20 @@ def tex_parse(string):
     return mark_safe(sub(r'\$([^\$]*)\$', tex_replace, escape(string)))
 
 
-@register.inclusion_tag('publications/references_list.html')
-def references_list(subject):
-    return dict(subject=subject)
+@register.inclusion_tag('publications/references_list.html', takes_context=True)
+def references_list(context, subject):
+    return dict(
+        subject=subject,
+        perms=context.get('perms', None),
+    )
+
+
+@register.inclusion_tag('publications/reference_add_button.html', takes_context=True)
+def reference_add_button(context, subject):
+    return dict(
+        subject=subject,
+        perms=context.get('perms', None),
+    )
 
 
 @register.inclusion_tag('publications/publication_authors.html')
