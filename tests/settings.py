@@ -9,7 +9,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     'django.contrib.sites',
     "publications",
-    "tests",
 ]
 TEMPLATES = [
     {
@@ -32,6 +31,6 @@ DATABASES = {
 
 SITE_ID = 1
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-ROOT_URLCONF = "tests.urls"
+# ROOT_URLCONF = "tests.urls"
 
 USE_TZ = False  # Change to True if you want timezone support

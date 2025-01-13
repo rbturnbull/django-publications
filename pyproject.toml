@@ -21,10 +21,10 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7"
-Django = ">=2.1.0"
+python = ">=3.10,<4.0"
+Django = ">=3.0.0"
 Pillow = ">=2.3.0"
-django_extensions = "*"
+django_extensions = ">=3.0.0"
 django-cms = ">=3.8.0"
 django-crispy-forms = ">=1.9.2"
 
