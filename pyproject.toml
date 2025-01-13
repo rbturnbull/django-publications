@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "django-publications"
+version = "0.1.1"
+authors = ["Lucas Theis <lucas@theis.io>", "Robert Turnbull"]
+description = "A Django app for managing scientific publications."
+homepage = "https://github.com/rbturnbull/django-publications"
+license = "MIT"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+]
+packages = [
+    { include = "publications" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+Django = ">=2.1.0"
+Pillow = ">=2.3.0"
+django_extensions = "*"
+django-cms = ">=3.8.0"
+django-crispy-forms = ">=1.9.2"
+
+
+[tool.poetry.extras]
+data = ["django_extensions", "django-cms"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+DJANGO_SETTINGS_MODULE = "tests.settings"
+
+[build-system]
+requires = ["setuptools >= 40.6.0", "poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
