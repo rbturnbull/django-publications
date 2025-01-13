@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "publications"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Lucas Theis <lucas@theis.io>", "Robert Turnbull"]
 description = "A Django app for managing scientific publications."
 homepage = "https://github.com/rbturnbull/django-publications"
