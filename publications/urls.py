@@ -3,11 +3,7 @@ __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
 from django.urls import path
-
-try:
-    from django.conf.urls import url
-except ImportError:
-    from django.conf.urls.defaults import url
+from django.urls import re_path
 
 from publications import views
 
@@ -26,8 +22,8 @@ urlpatterns = [
     path('<str:citekey>/', views.PublicationDetailView.as_view(), name='publication_detail'),
     path("", views.year, name='publication_list'),
 
-    url(r'^year/(?P<year>\d+)/$', views.year, name='year'),
-    url(r'^tag/(?P<keyword>.+)/$', views.keyword, name='keyword'),
-    url(r'^list/(?P<list>.+)/$', views.list, name='list'),
-    url(r'^unapi/$', views.unapi, name='unapi'),
+    re_path(r'^year/(?P<year>\d+)/$', views.year, name='year'),
+    re_path(r'^tag/(?P<keyword>.+)/$', views.keyword, name='keyword'),
+    re_path(r'^list/(?P<list>.+)/$', views.list, name='list'),
+    re_path(r'^unapi/$', views.unapi, name='unapi'),
 ]

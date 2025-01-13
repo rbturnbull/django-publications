@@ -3,10 +3,8 @@ __author__ = 'Lucas Theis <lucas@theis.io>'
 __docformat__ = 'epytext'
 
 from django.contrib import admin
-try:
-	from django.conf.urls import url
-except ImportError:
-	from django.conf.urls.defaults import url
+from django.urls import re_path
+
 from publications.models import CustomLink, CustomFile
 
 import publications.admin_views
@@ -45,7 +43,11 @@ class PublicationAdmin(admin.ModelAdmin):
 	inlines = [CustomLinkInline, CustomFileInline]
 
 	def get_urls(self):
-		return [
-				url(r'^import_bibtex/$', publications.admin_views.import_bibtex,
-					name='publications_publication_import_bibtex'),
-			] + super(PublicationAdmin, self).get_urls()
+		custom_urls = [
+			re_path(
+				r'^import_bibtex/$',
+				publications.admin_views.import_bibtex,
+				name='publications_publication_import_bibtex',
+			),
+		]
+		return custom_urls + super().get_urls()
